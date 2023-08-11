@@ -8,42 +8,25 @@ import io.cucumber.java.en.When;
 import org.apache.log4j.Logger;
 import org.junit.jupiter.api.Assertions;
 
-import static com.sofka.questions.MensajeLogin.mensajeLogin;
-import static com.sofka.questions.MensajeReptiles.mensajeReptiles;
+import static com.sofka.questions.MensajeCarritoVacio.mensajeCarritoVacio;
 import static com.sofka.tasks.AgregarAlCarrito.agregarAlCarrito;
+import static com.sofka.tasks.EliminarAnimal.eliminarAnimal;
 import static com.sofka.tasks.IrAPerros.irAPerros;
-import static com.sofka.tasks.ProcederAPagar.procederAPagar;
 import static net.serenitybdd.screenplay.GivenWhenThen.seeThat;
 import static net.serenitybdd.screenplay.actors.OnStage.theActorInTheSpotlight;
 import static org.hamcrest.CoreMatchers.equalTo;
 
-public class ComprarPerroStepDefinitions extends Setup {
+public class EliminarAnimalStepDefinitions extends Setup {
 
     public static Logger LOGGER = Logger.getLogger(ListarReptilesStepDefinitions.class);
-    @Given("que estoy en la pagina de la tienda virtuaal de mascotas")
-    public void queEstoyEnLaPaginaDeLaTiendaVirtuaalDeMascotas() {
+    @Given("que estoy en la pagina de la tienda virtual de mascotas y tengo un animal en mi carrito")
+    public void queEstoyEnLaPaginaDeLaTiendaVirtualDeMascotasYTengoUnAnimalEnMiCarrito() {
         try {
             configurarNavegador();
             LOGGER.info("Inicio de la Automatizacion");
             theActorInTheSpotlight().wasAbleTo(new AbrirPaginaInicial());
-        }catch (Exception e){
-            handleException(e);
-        }
-    }
-    @When("selecciono la categoria Perros")
-    public void seleccionoLaCategoriaPerros() {
-        try {
             theActorInTheSpotlight().attemptsTo(
-                    irAPerros()
-            );
-        }catch (Exception e){
-            handleException(e);
-        }
-    }
-    @When("selecciono y agrego el perro deseado al carrito")
-    public void seleccionoYAgregoElPerroDeseadoAlCarrito() {
-        try {
-            theActorInTheSpotlight().attemptsTo(
+                    irAPerros(),
                     agregarAlCarrito()
             );
         }catch (Exception e){
@@ -51,28 +34,28 @@ public class ComprarPerroStepDefinitions extends Setup {
         }
     }
 
-    @When("procedo al proceso de pago")
-    public void procedoAlProcesoDePago() {
+    @When("elimino ese animal de la orden de compra")
+    public void eliminoEseAnimalDeLaOrdenDeCompra() {
         try {
-            theActorInTheSpotlight().attemptsTo(procederAPagar());
+            theActorInTheSpotlight().attemptsTo(
+                    eliminarAnimal()
+            );
         }catch (Exception e){
             handleException(e);
         }
     }
 
-    @Then("deberia ver la confirmacion de compra exitosa")
-    public void deberiaVerLaConfirmacionDeCompraExitosa() {
+    @Then("deberia ver la orden de compra sin el animal eliminado")
+    public void deberiaVerLaOrdenDeCompraSinElAnimalEliminado() {
         try {
             theActorInTheSpotlight().should(
-                    seeThat(mensajeLogin(), equalTo("Please enter your username and password."))
+                    seeThat(mensajeCarritoVacio(), equalTo("Your cart is empty."))
             );
-            quitarDriver();
         }catch (Exception e){
             handleException(e);
         }finally {
             quitarDriver();
         }
-
     }
 
     private void handleException(Exception e) {
@@ -80,4 +63,5 @@ public class ComprarPerroStepDefinitions extends Setup {
         Assertions.fail();
         quitarDriver();
     }
+
 }

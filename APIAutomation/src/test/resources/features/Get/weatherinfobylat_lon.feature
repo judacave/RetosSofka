@@ -10,6 +10,7 @@ Feature: Listar info clima por latitud y longitud
     When method get
     Then status 200
     And match response city/coord == '#present'
+    And match responseHeaders['Content-Type'] contains ['application/xml; charset=utf-8']
     And match response city/coord.lon == '#notnull'
     And match response city.name == '#notnull'
 

@@ -9,4 +9,9 @@ public class PaginaCarrito {
 
     public static final Target LOGIN_INTERFACE_MESSAGE = Target.the("Interfaz de login para asercion")
             .located(By.xpath("//p[normalize-space()='Please enter your username and password.']"));
+
+    public static final Target REMOVE_BUTTON = Target.the("Boton para remover")
+            .locatedBy("//a[text()='Remove']");
+    public static final Target EMPTY_CART_MESSAGE = Target.the("Aviso de carrito vacio")
+            .locatedBy("//b[text()='Your cart is empty.']");
 }

@@ -6,9 +6,12 @@ Feature: Listar info clima por ciudad
   @Positive
   Scenario Outline: Obtener la info del clima exitosa
     Given url 'https://api.openweathermap.org/data/2.5/weather?q=<city>&appid=<apikey>'
+    And headers { Accept: 'application/json' }
     When method get
     Then status 200
     And match response contains {name: <city>, coord: #notnull, weather: #notnull}
+    And match responseHeaders['Content-Type'] contains ['application/json; charset=utf-8']
+
 
     Examples:
       | city    | apikey                                 |
